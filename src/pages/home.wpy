@@ -34,42 +34,81 @@
       </navigator>
   </view>
 </view>
+<!--/导航-->
+
+<!-- 楼层导航 -->
+<view class='floor' wx:for="{{ floorData }}" wx:key="index">
+  <!-- 首页标题 -->
+  <view class="floor-head">
+    <image class="floor-head-img" src='{{ item.floor_title.image_src }}'></image> 
+  </view>
+  <!-- 楼层主体 -->
+  <view class="floor-body">
+    <!-- 主体左侧大图 -->
+    <view class="floor-body-left">
+      <navigator class='floor-body-img-link' url='{{ item.product_list[0].navigator_url }}' open-type="{{ item.product_list[0].open_type }}">
+        <image class='floor-body-left-img' src='{{ item.product_list[0].image_src }}'></image>
+      </navigator>
+    </view>
+    <!-- 主体右侧小图 -->
+    <view class="floor-body-right">
+      <navigator class='floor-body-img-link'
+      url='{{ prod.navigator_url }}'
+      open-type="{{ prod.open_type }}"
+      wx:for="{{ item.product_list }}"
+      wx:for-item="prod"
+      wx:key="index"
+      wx:if="{{ index !== 0 }}">
+      <image
+        class='floor-body-right-img'
+        style="width: {{ prod.image_width + 'rpx'  }}"
+        src='{{ prod.image_src }}'></image>
+      </navigator>
+    </view>
+  </view>
+</view>
+<!-- 楼层导航 -->
+
+<!-- 返回底部 -->
+<ToTop></ToTop>
+<!-- 返回底部 -->
 
 </template>
 
 <script>
 import wepy from 'wepy'
-import request from '../utils/request'
+import ToTop from '../components/to-top/index'
+import * as home from '../api/home'
 
 export default class Home extends wepy.page {
   data = {
     swiperData: [],
-    catitems: []
+    catitems: [],
+    floorData: []
   }
 
   async onLoad(options) {
     this.loadSwiper()
     this.loadCatItems()
+    this.loadFloor()
+  }
+
+  components = {
+    ToTop
   }
 
   async loadSwiper () {
-    const res = await request({
-      url: 'home/swiperdata',
-      method: 'GET',
-      dataType: 'json'
-    })
-    this.swiperData = res.data.data
+    this.swiperData = await home.getSwiper()
     this.$apply()
   }
 
   async loadCatItems () {
-    const res = await request({
-      url: 'home/catitems',
-      method: 'GET',
-      dataType: 'json'
-    })
-    this.catitems = res.data.data
-    console.log(this.catitems)
+    this.catitems = await home.getNavCats()
+    this.$apply()
+  }
+
+  async loadFloor () {
+    this.floorData = await home.getFloor()
     this.$apply()
   }
 }
@@ -117,5 +156,37 @@ export default class Home extends wepy.page {
 .nav-item-img {
   width: 128rpx;
   height: 128rpx;
+}
+
+/* 楼层导航 */
+.floor {
+  margin-top: 30px;
+}
+.floor-head-img {
+  widows: 750rpx;
+  height: 59rpx;
+}
+.floor-body {
+  background-color: #fff;
+  padding: 20rpx 0 10rpx 16rpx;
+  display: flex;
+}
+.floor-body-right {
+  display: flex;
+  flex-wrap: wrap;
+}
+.floor-body-img-link {
+  margin: 0 10rpx 10rpx 0;
+}
+.floor-body-left-img {
+  width: 232rpx;
+  height: 386rpx;
+}
+.floor-body-right-img {
+  width: 233rpx;
+  height: 188rpx;
+}
+.hvr {
+  opacity: 0.7;
 }
 </style>
