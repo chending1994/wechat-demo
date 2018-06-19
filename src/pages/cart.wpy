@@ -1,0 +1,14 @@
+<template>
+    <view>cart</view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Category extends wepy.page {
+
+}
+</script>
+
+<style>
+
+</style>

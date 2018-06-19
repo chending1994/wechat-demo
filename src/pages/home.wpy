@@ -1,0 +1,121 @@
+<template>
+<!--搜索栏  -->
+<view class="search-wrap">
+  <view class='search-bar'>
+    <image class="search-img" src='/images/icon_search@2x.png'></image>
+    <text class='search-text'>搜索</text>
+  </view>
+</view>
+<!--/搜索栏  -->
+
+<!--轮播图  -->
+<view class="swiper-wrap">
+  <swiper
+  autoplay="true"
+  indicator-color="rgba(0,0,0,.3)"
+  indicator-dots
+  indicator-active-color="#fff"
+  interval="2000"
+  circular
+  >
+    <swiper-item wx:for="{{ swiperData }}" wx:key="{{ item.image_src }}">
+    <navigator open-type='widthFix' class='swiper-item-img' src="{{ item.navigator_url }}">
+      <image mode='widthFix' class="swiper-item-img" src='{{ item.image_src }}'></image>
+    </navigator>
+    </swiper-item>
+  </swiper>
+</view>
+
+<!--导航  -->
+<view class="nav-wrap">
+  <view class="nav-item" wx:for"{{ catitems }}" wx:key="{{ item.image_src }}">
+      <navigator url="{{ item.navigator_url }}" open-type="{{ item.open_type }}">
+          <image class="nav-item-img" src="{{ item.image_src }}"></image>
+      </navigator>
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import request from '../utils/request'
+
+export default class Home extends wepy.page {
+  data = {
+    swiperData: [],
+    catitems: []
+  }
+
+  async onLoad(options) {
+    this.loadSwiper()
+    this.loadCatItems()
+  }
+
+  async loadSwiper () {
+    const res = await request({
+      url: 'home/swiperdata',
+      method: 'GET',
+      dataType: 'json'
+    })
+    this.swiperData = res.data.data
+    this.$apply()
+  }
+
+  async loadCatItems () {
+    const res = await request({
+      url: 'home/catitems',
+      method: 'GET',
+      dataType: 'json'
+    })
+    this.catitems = res.data.data
+    console.log(this.catitems)
+    this.$apply()
+  }
+}
+</script>
+
+<style>
+.search-wrap {
+  background-color: #ff2d4a;
+  padding: 20rpx 16rpx;
+}
+.search-bar {
+  height: 60rpx;
+  background-color: #fff;
+  border-radius: 6rpx;
+  display: flex;
+  /*水平居中  */
+  justify-content: center;
+  /*垂直居中  */
+  align-items: center;
+  font-size: 24rpx;
+  color: #bbbbbb;
+}
+.search-img {
+  width: 32rpx;
+  height: 32rpx;
+}
+.search-text {
+  margin-left: 16rpx;
+}
+.swiper-item-img {
+  width: 100%;
+  margin-bottom: 24rpx;
+}
+/* 分类导航 */
+.nav-wrap {
+  display: flex;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-item-img {
+  width: 128rpx;
+  height: 128rpx;
+}
+</style>
