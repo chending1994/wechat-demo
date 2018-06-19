@@ -1,0 +1,25 @@
+<template>
+  <view class="end-tips">
+    <view class="iconfont icon-xiao"></view>
+    <text class="end-tips-txt">我是有底线的</text>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Cart extends wepy.page {}
+</script>
+
+<style lang="less">
+  .end-tips {
+    height: 200rpx;
+    display: flex;
+    justify-content: center;
+    color:#999;
+    margin-top: 20rpx;
+    &-txt{
+      margin-left: 10rpx;
+    }
+  }
+</style>

@@ -69,15 +69,19 @@
 </view>
 <!-- 楼层导航 -->
 
-<!-- 返回底部 -->
+<!-- 返回顶部 -->
 <ToTop></ToTop>
-<!-- 返回底部 -->
+<!-- 返回顶部 -->
+
+<!--- 底线 -->
+<EndLine></EndLine>
 
 </template>
 
 <script>
 import wepy from 'wepy'
 import ToTop from '../components/to-top/index'
+import EndLine from '../components/end-line/index'
 import * as home from '../api/home'
 
 export default class Home extends wepy.page {
@@ -94,7 +98,8 @@ export default class Home extends wepy.page {
   }
 
   components = {
-    ToTop
+    ToTop,
+    EndLine
   }
 
   async loadSwiper () {

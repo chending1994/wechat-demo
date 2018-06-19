@@ -1,4 +1,5 @@
 <style lang="less">
+  @import "./style/iconfont.wxss";
 </style>
 
 <script>
