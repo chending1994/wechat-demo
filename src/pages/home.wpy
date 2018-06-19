@@ -19,7 +19,7 @@
   circular
   >
     <swiper-item wx:for="{{ swiperData }}" wx:key="{{ item.image_src }}">
-    <navigator open-type='widthFix' class='swiper-item-img' src="{{ item.navigator_url }}">
+    <navigator open-type="{{ item.open_type }}" url="{{ item.navigator_url }}">
       <image mode='widthFix' class="swiper-item-img" src='{{ item.image_src }}'></image>
     </navigator>
     </swiper-item>

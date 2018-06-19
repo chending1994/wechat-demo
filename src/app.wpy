@@ -13,7 +13,7 @@ export default class extends wepy.app {
   }
 
   config = {
-    pages: ['pages/home', 'pages/category', 'pages/cart', 'pages/me'],
+    pages: ['pages/home', 'pages/category', 'pages/cart', 'pages/me', 'pages/goods_detail'],
     window: {
       navigationBarBackgroundColor: '#ff2d4a',
       navigationBarTitleText: '优购',
