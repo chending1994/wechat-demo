@@ -24,14 +24,11 @@
   interval="2500"
   autoplay="true"
   circular="true">
-  <swiper-item>
-    <image class="swiper-img" src="/upload/detail_banner@2x.png" />
-  </swiper-item>
-  <swiper-item>
-    <image class="swiper-img" src="/upload/detail_banner@2x.png" />
-  </swiper-item>
-  <swiper-item>
-    <image class="swiper-img" src="/upload/detail_banner@2x.png" />
+  <swiper-item
+    wx:for="{{ good.pics }}"
+    wx:key="index"
+    @tap="handlePreviewImg({{ index }})">
+    <image class="swiper-img" src="{{ item.pics_big_url }}" />
   </swiper-item>
 </swiper>
 
@@ -111,10 +108,20 @@ export default class Cart extends wepy.page {
   data = {
     good: {}
   }
+
+  methods = {
+    handlePreviewImg (index) {
+      const urls = this.good.pics.map(item => item.pics_big_url)
+      wepy.previewImage({
+        current: urls[index],
+        urls
+      })
+    }
+  }
+
   async onLoad (options) {
-    console.log(options)
-    const res = await goods.getGoodDetail(options.goods_id)
-    this.good = res.data[0]
+    this.good = await goods.getGoodDetail(options.goods_id)
+    console.log(this.good)
     this.$apply()
   }
 }
