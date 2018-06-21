@@ -60,8 +60,9 @@
   </view>
 </view>
 <view class="part">
-  <view class="part-item">
-    <text class="note">送至</text><text class="description">收货地址xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</text>
+  <view class="part-item" @tap="handleChooseAddress">
+    <text class="note">送至</text>
+    <text class="description">{{ deliveryAddress }}</text>
     <view class="iconfont icon-jiantouyou"></view>
   </view>
 </view>
@@ -106,7 +107,8 @@ export default class Cart extends wepy.page {
     'navigationBarTitleText': '商品详情'
   }
   data = {
-    good: {}
+    good: {},
+    deliveryAddress: ''
   }
 
   methods = {
@@ -122,6 +124,12 @@ export default class Cart extends wepy.page {
   async onLoad (options) {
     this.good = await goods.getGoodDetail(options.goods_id)
     console.log(this.good)
+    this.$apply()
+  }
+
+  async handleChooseAddress () {
+    const ret = await wepy.chooseAddress()
+    this.deliveryAddress = `${ret.provinceName}${ret.cityName}${ret.countyName}${ret.detailInfo}`
     this.$apply()
   }
 }
