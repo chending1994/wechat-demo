@@ -64,29 +64,22 @@
 
   <view class="tabs">
     <view class="tabs-head">
-      <view class="tabs-item active">
-        图文详情
-      </view>
-      <view class="tabs-item">
-        规格参数
+      <view
+        class="tabs-item {{ index === activeIndex ? 'active' : '' }}"
+        wx:for="{{ tabs }}"
+        wx:key="index"
+        @tap="handleSwitchTab({{ index }})">
+        {{ item }}
       </view>
     </view>
     <view class="tabs-body">
-      <view class="tabs-content" hidden="{{ activeTabsIndex != 0 }}">
-        商品图文展示
+      <view class="tabs-content" hidden="{{ activeIndex !== 0 }}">
+        商品图文详情
       </view>
-      <view class="tabs-content">
-        <view class="param-item">
-          <text class="note">商品名称</text>
-          <text class="description">复古撞色运动外套男女情侣校服立领夹文字自动换行</text>
-        </view>
-        <view class="param-item">
-          <text class="note">品牌</text>
-          <text class="description">初语</text>
-        </view>
-        <view class="param-item">
-          <text class="note">编号</text>
-          <text class="description">BR1005</text>
+      <view class="tabs-content" hidden="{{ activeIndex !== 1 }}">
+        <view class="param-item" wx:for="{{ good.attrs }}" wx:key="index">
+          <text class="note">{{ item.attr_name }}</text>
+          <text class="description">{{ item.attr_vals }}</text>
         </view>
       </view>
     </view>
@@ -103,7 +96,12 @@
     }
     data = {
       good: {},
-      deliveryAddress: ''
+      deliveryAddress: '',
+      tabs: [
+        '图文详情',
+        '规格参数'
+      ],
+      activeIndex: 0
     }
 
     methods = {
@@ -113,6 +111,11 @@
           current: urls[index],
           urls
         })
+      },
+
+      // 处理切换标签页
+      handleSwitchTab (index) {
+        this.activeIndex = index
       }
     }
 
