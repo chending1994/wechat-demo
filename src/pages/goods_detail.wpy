@@ -6,11 +6,13 @@
       <text class="item-note">联系客服</text>
     </view>
     <view class="item">
-      <view class="iconfont icon-gouwuche"></view>
-      <text class="item-note">购物车</text>
+      <navigator url="/pages/cart" open-type="switchTab">
+        <view class="iconfont icon-gouwuche"></view>
+        <text class="item-note">购物车</text>
+      </navigator> 
     </view>
     <view class="btn-group">
-      <view class="btn yellow-button">加入购物车</view>
+      <view class="btn yellow-button" @tap="handleAddCart">加入购物车</view>
       <view class="btn red-button">立即购买</view>
     </view>
   </view>
@@ -74,7 +76,8 @@
     </view>
     <view class="tabs-body">
       <view class="tabs-content" hidden="{{ activeIndex !== 0 }}">
-        商品图文详情
+          <import src="/plugins/wxParse/wxParse.wxml"/>
+          <template is="wxParse" data="{{ wxParseData: article.nodes }}"/>
       </view>
       <view class="tabs-content" hidden="{{ activeIndex !== 1 }}">
         <view class="param-item" wx:for="{{ good.attrs }}" wx:key="index">
@@ -89,6 +92,7 @@
 <script>
   import wepy from 'wepy'
   import * as goods from '../api/goods'
+  import WxParse from '../plugins/wxParse/wxParse'
 
   export default class Cart extends wepy.page {
     config = {
@@ -116,7 +120,9 @@
       // 处理切换标签页
       handleSwitchTab (index) {
         this.activeIndex = index
-      }
+      },
+
+      wxParseImgLoad () {}
     }
 
     async onLoad(options) {
@@ -140,6 +146,12 @@
 
     async loadGoodsDetail(options) {
       this.good = await goods.getGoodDetail(options.goods_id)
+      WxParse.wxParse(
+        'article',
+        'html',
+        this.good.goods_introduce,
+        this,
+        5)
       this.$apply()
     }
 
@@ -155,11 +167,59 @@
         this.$apply()
       }
     }
+
+    /**
+     * 添加购物车
+     */
+    async handleAddCart () {
+      let cartData
+      try {
+        const res = await wepy.getStorage({ key: 'cart_data' })
+        cartData = res.data
+      } catch (err) {
+        cartData = []
+      }
+
+      const { goods_id: goodsId, goods_name, goods_price, goods_small_logo } = this.good
+
+      // 判断商品是否存在购物车
+      const cartGood = cartData.find(function (item) {
+        return item.goods_id === goodsId
+      })
+
+      // 如果不存在，则添加商品到购物车
+      if (!cartGood) {
+        cartData.push({
+          goods_id: goodsId,
+          goods_name,
+          goods_price,
+          goods_small_logo,
+          count: 1,
+          selected: true
+        })
+      } else {
+        cartGood.count++
+      }
+
+      // 操作完成后将购物车数据保存到本地缓存
+      wepy.setStorage({
+        key: 'cart_data',
+        data: cartData
+      })
+
+      // 添加成功，提示公户
+      wepy.showToast({
+        title: '成功加入购物车',
+        icon: 'success',
+        duration: 2000
+      })
+    }
   }
 
 </script>
 
 <style lang="less">
+  @import "/../plugins/wxParse/wxParse.wxss";
   .swiper,
   .swiper-img {
     width: 750rpx;
