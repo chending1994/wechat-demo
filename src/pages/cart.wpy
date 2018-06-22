@@ -1,106 +1,101 @@
 <template>
   <block wx:if="{{ cartData.length !== 0 }}">
-  <!-- 收货地址 -->
-      <view class="chooseAddress-component">
-        <view class="address-info">
-          <view class="item space-between">
-            <view class="col">
-              <text class="note">收货人：</text>
-              <text class="detail">张三</text>
-            </view>
-            <view class="col">
-              <text class="address-phone">123456789</text>
-              <view class="iconfont-tap icon-jiantouyou"></view>
-            </view>
+    <!-- 收货地址 -->
+    <view class="chooseAddress-component">
+      <view class="address-info">
+        <view class="item space-between">
+          <view class="col">
+            <text class="note">收货人：</text>
+            <text class="detail">张三</text>
           </view>
-          <view class="item">
-            <text class="note">收货地址：</text>
-            <text class="detail">xxxxxxxxxxxxxxxx</text>
+          <view class="col">
+            <text class="address-phone">123456789</text>
+            <view class="iconfont-tap icon-jiantouyou"></view>
           </view>
-          <!-- <view class="add-address-btn">+ 新增地址</view> -->
-          <image class="address-border" src="/images/cart_border@2x.png" alt="" />
+        </view>
+        <view class="item">
+          <text class="note">收货地址：</text>
+          <text class="detail">xxxxxxxxxxxxxxxx</text>
+        </view>
+        <!-- <view class="add-address-btn">+ 新增地址</view> -->
+        <image class="address-border" src="/images/cart_border@2x.png" alt="" />
+      </view>
+    </view>
+    <view class="divider"></view>
+    <view class="cart-list">
+      <view class="shop-head">
+        <!-- <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view> -->
+        <view class="shop-head-info">
+          <view class="iconfont icon-shop flex-center icon-dianpu"></view>
+          <text class="shop-name">优购生活馆</text>
+        </view>
+        <!-- <view class="iconfont-tap icon-bianji"></view> -->
+      </view>
+      <view class="product-item" wx:for="{{ cartData }}" wx:key="index" @longpress="handleRemoveItem({{ item.goods_id }})">
+        <!-- icon-xuanze-fill 选择状态 -->
+        <view class="iconfont-tap icon-xuanze {{ item.selected ? 'icon-xuanze-fill' : '' }}" @tap="handleSwitchSelect({{ item }})">
+        </view>
+        <navigator url="/pages/goods_detail?goods_id=55578" class="product-left">
+          <image class="product-img" src="{{ item.goods_small_logo }}" />
+        </navigator>
+        <view class="product-right">
+          <navigator url="/pages/goods_detail?goods_id={{ item.goods_id }}" class="product-name">
+            {{ item.goods_name }}
+          </navigator>
+          <view class="product-detail">
+            <!-- 商品简介 -->
+          </view>
+          <view class="product-price">
+            <text class="product-price-symbol">￥</text>
+            <text class="product-price-integer">{{ item.goods_price }}</text>
+            <text class="product-price-decimal">.00</text>
+          </view>
+          <!-- <view class="product-count">x{{ item.counts }}</view> -->
+          <view class="product-count-eidt">
+            <!-- disabled 禁用状态 -->
+            <view class="count-min {{ item.count === 1 ? 'disabled' : '' }}" @tap="handleItemCount({{ item }}, {{ -1 }})">-</view>
+            <input class="count-number" type="number" value="{{ item.count }}" @input="handleEditCount({{ item }})" />
+            <view class="count-add" @tap="handleItemCount({{ item }}, {{ 1 }})">+</view>
+          </view>
         </view>
       </view>
-      <view class="divider"></view>
-      <view class="cart-list">
-        <view class="shop-head">
-          <!-- <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view> -->
-          <view class="shop-head-info">
-            <view class="iconfont icon-shop flex-center icon-dianpu"></view>
-            <text class="shop-name">优购生活馆</text>
-          </view>
-          <!-- <view class="iconfont-tap icon-bianji"></view> -->
-        </view>
-        <view class="product-item" wx:for="{{ cartData }}" wx:key="index" @longpress="handleRemoveItem({{ item.goods_id }})">
-          <!-- icon-xuanze-fill 选择状态 -->
-          <view
-            class="iconfont-tap icon-xuanze {{ item.selected ? 'icon-xuanze-fill' : '' }}"
-            @tap="handleSwitchSelect({{ item }})">
-          </view>
-          <navigator url="/pages/goods_detail?goods_id=55578" class="product-left">
-            <image class="product-img" src="{{ item.goods_small_logo }}" />
-          </navigator>
-          <view class="product-right">
-            <navigator url="/pages/goods_detail?goods_id={{ item.goods_id }}" class="product-name">
-              {{ item.goods_name }}
-            </navigator>
-            <view class="product-detail">
-              <!-- 商品简介 -->
-            </view>
+    </view>
+    <view class="bottom-space"></view>
+    <view class="fixed-bar">
+      <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view>
+      <text class="select-all">全选</text>
+      <view class="total">
+        <view class="total">
+          <view class="total-body">
+            <view class="total-note">合计：</view>
             <view class="product-price">
               <text class="product-price-symbol">￥</text>
-              <text class="product-price-integer">{{ item.goods_price }}</text>
+              <text class="product-price-integer">{{ amount }}</text>
               <text class="product-price-decimal">.00</text>
             </view>
-            <!-- <view class="product-count">x{{ item.counts }}</view> -->
-            <view class="product-count-eidt">
-              <!-- disabled 禁用状态 -->
-              <view
-                class="count-min {{ item.count === 1 ? 'disabled' : '' }}"
-                @tap="handleItemCount({{ item }}, {{ -1 }})">-</view>
-              <input
-                class="count-number"
-                type="number"
-                value="{{ item.count }}"
-                @input="handleEditCount({{ item }})" />
-              <view class="count-add" @tap="handleItemCount({{ item }}, {{ 1 }})">+</view>
-            </view>
           </view>
+          <view class="total-foot">包含运费</view>
         </view>
       </view>
-      <view class="bottom-space"></view>
-      <view class="fixed-bar">
-        <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view>
-        <text class="select-all">全选</text>
-        <view class="total">
-          <view class="total">
-            <view class="total-body">
-              <view class="total-note">合计：</view>
-              <view class="product-price">
-                <text class="product-price-symbol">￥</text>
-                <text class="product-price-integer">{{ amount }}</text>
-                <text class="product-price-decimal">.00</text>
-              </view>
-            </view>
-            <view class="total-foot">包含运费</view>
-          </view>
-        </view>
-        <!-- <button @tap="">查询订单</button> -->
-        <view class="buy-button">
-          <!-- <BtnWxLogin></BtnWxLogin> -->
-          结算({{ selectedCount }})
-        </view>
+      <!-- <button @tap="">查询订单</button> -->
+      <view class="buy-button">
+        <!-- <BtnWxLogin></BtnWxLogin> -->
+        <button @getuserinfo="handleGetUserInfo" open-type="getUserInfo">结算</button>
+        结算({{ selectedCount }})
       </view>
+    </view>
   </block>
-      <!-- 购物车没有数据的提示信息 -->
-      <view wx:else class="cart-empty flex-center">
-        <image class="cart-empty-img" src="/images/cart_empty@2x.png"></image>
-        <view class="cart-empty-txt">你还没有添加任何商品</view>
-      </view>
+  <!-- 购物车没有数据的提示信息 -->
+  <view wx:else class="cart-empty flex-center">
+    <image class="cart-empty-img" src="/images/cart_empty@2x.png"></image>
+    <view class="cart-empty-txt">你还没有添加任何商品</view>
+  </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import * as auth from '../api/auth'
+  import * as order from '../api/order'
   export default class Category extends wepy.page {
     data = {
       cartData: [],
@@ -112,12 +107,22 @@
      *购物车数据变化，购物车数据同步持久化到本地存储
      */
     watch = {
-      cartData (newValue, oldValue) {
+      cartData(newValue, oldValue) {
         this.getAmount()
         wepy.setStorage({
           key: 'cart_data',
           data: newValue
         })
+      }
+    }
+
+    computed = {
+      // 计算属性只能当作属性来访问，不能当作方法调用
+      // 计算树形的值就是该方法的返回值
+      // 使用计算属性还有一个好处就是：它会监视属性方法中依赖的数据改变
+      // 当依赖的数据发生变化之后，计算属性会重新计算执行
+      toggleAll() {
+        return this.cartData.every(item => item.selected === true)
       }
     }
 
@@ -140,7 +145,7 @@
         this.$apply()
       },
 
-      handleItemCount (item, count) {
+      handleItemCount(item, count) {
         item.count += count
         const index = this.cartData.findIndex(prod => prod.goods_id === item.goods_id)
         this.cartData[index].count += count
@@ -149,7 +154,7 @@
         }
       },
 
-      handleEditCount (item, event) {
+      handleEditCount(item, event) {
         const index = this.cartData.findIndex(prod => prod.goods_id === item.goods_id)
         this.cartData[index].count = Number.parseInt(event.detail.value)
       },
@@ -157,13 +162,139 @@
       /**
        * 处理购物车商品的切换选中状态
        */
-      handleSwitchSelect (item) {
+      handleSwitchSelect(item) {
         const index = this.cartData.findIndex(prod => prod.goods_id === item.goods_id)
         this.cartData[index].selected = !this.cartData[index].selected
+      },
+
+      /**
+       * 处理全选
+       */
+      handleToggleAll() {
+        console.log(this.toggleAll)
+        // 如果原来是 false ，则现在让所有的项都变为 true
+        // 反之 是 false
+        const selected = !this.toggleAll
+        this.cartData.forEach(item => {
+          item.selected = selected
+        })
+      },
+
+      /**
+       *处理结算
+       */
+      async handleGetUserInfo(res) {
+        // 如果所有购物车所有商品都没有被选中
+        if (this.cartData.every(item => item.selected === false)) {
+          return wepy.showToast({
+            title: '请选择商品',
+            duration: 2000
+          })
+        }
+
+        const loginRes = await wepy.login()
+
+        const data = {
+          code: loginRes.code,
+          encryptedData: res.detail.encryptedData,
+          iv: res.detail.iv,
+          rawData: res.detail.rawData,
+          signature: res.detail.signature
+        }
+
+        const ret = await auth.login(data)
+
+        if (ret.meta.status === 200) {
+          wepy.showToast({
+            title: '登录成功',
+            duration: 2000
+          })
+
+          // 用户登录成功，把 token 写入本地缓存
+          wepy.setStorage({
+            key: 'token',
+            data: ret.data.token
+          })
+
+          // 数组的 filter 方法用来筛选出所有符合 item.selected === true 元素
+          const goods = this.cartData
+            .filter(item => item.selected === true)
+            .map(item => {
+              return {
+                goods_id: item.goods_id,
+                goods_number: item.count,
+                goods_price: item.goods_price
+              }
+            })
+
+          // 购物车结算用户登录成功，创建订单
+          const orderRet = await order.create({
+            order_price: this.amount, // 订单价格
+            consignee_addr: '北京市顺义区', // 订单地址
+            // order_detail: JSON.stringify(this.cartData), // 订单详情
+            goods // 商品列表内部存放商品（ID，amount和goods_price）列表
+          })
+
+          wepy.showToast({
+            title: '订单创建成功'
+          })
+
+          // 订单创建成功，删除购物车中选中的商品
+          for (let i = 0; i < this.cartData.length; i++) {
+            if (this.cartData[i].selected === true) {
+              this.cartData.splice(i, 1)
+              i-- // 在循环中删除数组元素，要记得让索引循环倒退一次，否则可能会漏掉写数据
+            }
+          }
+
+          this.$apply()
+
+          // 无论支付成功与否，都让用户跳转到订单页面
+          wx.navigateTo({
+            url: '/pages/orders?type=1'
+          })
+
+          // 发起微信支付（需要企业账号主体）
+          // wx.requestPayment({
+          //   'timeStamp': '',
+          //   'nonceStr': '',
+          //   'package': '',
+          //   'signType': 'MD5',
+          //   'paySign': '',
+          //   'success':function(res){
+          //   },
+          //   'fail':function(res){
+          //   }
+          // })
+
+          // 支付（服务端做的事儿更多一些）
+          // 1. 创建订单
+          // 2. 调用预支付，得到微信支付需要的数据
+          // 3. 调用微信支付API wx.requestPayment(OBJECT)
+          // 4. 根据微信支付的返回值判断订单是否支付成功
+          //    还要调用 API 告诉服务器订单支付成功与否
+          //    如果支付成功，通知用户成功了
+          //    如果支付失败，通过用户支付失败了
+        } else if (ret.meta.status === 400) {
+          wepy.showToast({
+            title: '登录过期，请重新登录',
+            duration: 2000
+          })
+        }
       }
     }
 
-    getAmount () {
+    /**
+     * 获取全选的选中状态
+     */
+    getToggleAllStat() {
+      // every 会遍历数组的每一项，对每一项都判定 item.selected === true 条件
+      // 当所有元素都满足 item.selected === true 条件的时候，every 方法返回 true
+      // 只要有一个元素不满足 item.selected === true，every 停止遍历，返回 false
+      this.toggleStat = this.cartData.every(item => item.selected === true)
+    }
+
+    getAmount() {
       let amount = 0
       let selectedCount = 0
       this.cartData.forEach(item => {
