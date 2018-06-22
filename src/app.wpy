@@ -1,5 +1,66 @@
 <style lang="less">
   @import "./style/iconfont.wxss";
+
+  @import 'style/iconfont.wxss';
+  page {
+    font-size: 24rpx;
+    color: #333;
+    background-color: #f4f4f4;
+    line-height: 1;
+  }
+
+  image {
+    vertical-align: top;
+  }
+
+  .fz24 {
+    font-size: 24rpx !important;
+  }
+
+  .space-between {
+    justify-content: space-between !important;
+  }
+
+  .flex-end {
+    justify-content: flex-end !important;
+  }
+
+  .flex-center {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+  .divider {
+    height: 20rpx;
+  }
+  .divider-sm {
+    height: 10rpx;
+  }
+  .mt20 {
+    margin-top: 20rpx;
+  }
+  .bottom-space {
+    height: 150rpx;
+  }
+  .color-main {
+    color: #ff2d4a !important;
+  }
+
+  .iconfont {
+    font-size: 32rpx;
+  }
+  .iconfont-tap {
+    font-family: 'iconfont' !important;
+    font-size: 32rpx;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+
+    min-width: 88rpx;
+    min-height: 88rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>
 
 <script>
@@ -13,45 +74,46 @@ export default class extends wepy.app {
   }
 
   config = {
-    pages: ['pages/home', 'pages/category', 'pages/cart', 'pages/me', 'pages/goods_detail'],
-    window: {
-      navigationBarBackgroundColor: '#ff2d4a',
-      navigationBarTitleText: '优购',
-      navigationBarTextStyle: '#fff',
-      backgroundTextStyle: 'dark'
+    'pages': [
+      'pages/home',
+      'pages/category',
+      'pages/cart',
+      'pages/me',
+      'pages/goods_detail'
+    ],
+    'window': {
+      'backgroundTextStyle': 'light',
+      'navigationBarBackgroundColor': '#ff2d4a',
+      'navigationBarTitleText': '优购',
+      'navigationBarTextStyle': 'white'
     },
-    tabBar: {
-      color: '#ccc',
-      list: [
-        {
-          pagePath: 'pages/home',
-          text: '首页',
-          iconPath: 'images/icon_home@3x.png',
-          selectedIconPath: 'images/icon_home_active@3x.png'
-        },
-        {
-          pagePath: 'pages/category',
-          text: '分类',
-          iconPath: 'images/icon_category@3x.png',
-          selectedIconPath: 'images/icon_category_active@3x.png'
-        },
-        {
-          pagePath: 'pages/cart',
-          text: '购物车',
-          iconPath: 'images/icon_cart@3x.png',
-          selectedIconPath: 'images/icon_cart_active@3x.png'
-        },
-        {
-          pagePath: 'pages/me',
-          text: '我的',
-          iconPath: 'images/icon_me@3x.png',
-          selectedIconPath: 'images/icon_me_active@3x.png'
-        }
-      ]
+    'tabBar': {
+      'list': [{
+        'pagePath': 'pages/home',
+        'text': '首页',
+        'iconPath': 'images/icon_home@3x.png',
+        'selectedIconPath': 'images/icon_home_active@3x.png'
+      }, {
+        'pagePath': 'pages/category',
+        'text': '分类',
+        'iconPath': 'images/icon_category@3x.png',
+        'selectedIconPath': 'images/icon_category_active@3x.png'
+      }, {
+        'pagePath': 'pages/cart',
+        'text': '购物车',
+        'iconPath': 'images/icon_cart@3x.png',
+        'selectedIconPath': 'images/icon_cart_active@3x.png'
+      }, {
+        'pagePath': 'pages/me',
+        'text': '我的',
+        'iconPath': 'images/icon_me@3x.png',
+        'selectedIconPath': 'images/icon_me_active@3x.png'
+      }]
     }
   }
 
-  onLaunch() {
+  onLaunch () {
+    console.log('on launch')
   }
 }
 </script>

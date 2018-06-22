@@ -52,9 +52,9 @@
             <!-- <view class="product-count">x{{ item.counts }}</view> -->
             <view class="product-count-eidt">
               <!-- disabled 禁用状态 -->
-              <view class="count-min disabled">-</view>
+              <view class="count-min {{ item.count === 1 ? 'disabled' : '' }}" @tap="handleItemCount({{ item }}, {{ -1 }})">-</view>
               <input class="count-number" type="number" value="{{ item.count }}" />
-              <view class="count-add">+</view>
+              <view class="count-add" @tap="handleItemCount({{ item }}, {{ 1 }})">+</view>
             </view>
           </view>
         </view>
@@ -113,6 +113,18 @@
         const delIndex = this.cartData.findIndex(item => item.goods_id === goodsId)
         this.cartData.splice(delIndex, 1)
         this.$apply()
+        wepy.setStorage({
+          key: 'cart_data',
+          data: this.cartData
+        })
+      },
+      handleItemCount (item, count) {
+        item.count += count
+        const index = this.cartData.findIndex(prod => prod.goods_id === item.goods_id)
+        this.cartData[index].count += count
+        if (this.cartData[index].count < 1) {
+          this.cartData[index].count = 1
+        }
         wepy.setStorage({
           key: 'cart_data',
           data: this.cartData
