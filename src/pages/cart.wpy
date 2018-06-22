@@ -52,8 +52,14 @@
             <!-- <view class="product-count">x{{ item.counts }}</view> -->
             <view class="product-count-eidt">
               <!-- disabled 禁用状态 -->
-              <view class="count-min {{ item.count === 1 ? 'disabled' : '' }}" @tap="handleItemCount({{ item }}, {{ -1 }})">-</view>
-              <input class="count-number" type="number" value="{{ item.count }}" />
+              <view
+                class="count-min {{ item.count === 1 ? 'disabled' : '' }}"
+                @tap="handleItemCount({{ item }}, {{ -1 }})">-</view>
+              <input
+                class="count-number"
+                type="number"
+                value="{{ item.count }}"
+                @input="handleEditCount({{ item }})" />
               <view class="count-add" @tap="handleItemCount({{ item }}, {{ 1 }})">+</view>
             </view>
           </view>
@@ -118,6 +124,7 @@
           data: this.cartData
         })
       },
+
       handleItemCount (item, count) {
         item.count += count
         const index = this.cartData.findIndex(prod => prod.goods_id === item.goods_id)
@@ -125,6 +132,15 @@
         if (this.cartData[index].count < 1) {
           this.cartData[index].count = 1
         }
+        wepy.setStorage({
+          key: 'cart_data',
+          data: this.cartData
+        })
+      },
+
+      handleEditCount (item, event) {
+        const index = this.cartData.findIndex(prod => prod.goods_id === item.goods_id)
+        this.cartData[index].count = Number.parseInt(event.detail.value)
         wepy.setStorage({
           key: 'cart_data',
           data: this.cartData
