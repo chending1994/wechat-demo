@@ -107,6 +107,20 @@
       amount: 0,
       selectedCount: 0
     }
+
+    /**
+     *购物车数据变化，购物车数据同步持久化到本地存储
+     */
+    watch = {
+      cartData (newValue, oldValue) {
+        this.getAmount()
+        wepy.setStorage({
+          key: 'cart_data',
+          data: newValue
+        })
+      }
+    }
+
     methods = {
       /**
        * 删除购物车商品
@@ -124,10 +138,6 @@
         const delIndex = this.cartData.findIndex(item => item.goods_id === goodsId)
         this.cartData.splice(delIndex, 1)
         this.$apply()
-        wepy.setStorage({
-          key: 'cart_data',
-          data: this.cartData
-        })
       },
 
       handleItemCount (item, count) {
@@ -137,19 +147,11 @@
         if (this.cartData[index].count < 1) {
           this.cartData[index].count = 1
         }
-        wepy.setStorage({
-          key: 'cart_data',
-          data: this.cartData
-        })
       },
 
       handleEditCount (item, event) {
         const index = this.cartData.findIndex(prod => prod.goods_id === item.goods_id)
         this.cartData[index].count = Number.parseInt(event.detail.value)
-        wepy.setStorage({
-          key: 'cart_data',
-          data: this.cartData
-        })
       },
 
       /**
