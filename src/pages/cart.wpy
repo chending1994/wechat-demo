@@ -1,91 +1,93 @@
 <template>
+  <block wx:if="{{ cartData.length !== 0 }}">
   <!-- 收货地址 -->
-  <view class="chooseAddress-component">
-    <view class="address-info">
-      <view class="item space-between">
-        <view class="col">
-          <text class="note">收货人：</text>
-          <text class="detail">张三</text>
-        </view>
-        <view class="col">
-          <text class="address-phone">123456789</text>
-          <view class="iconfont-tap icon-jiantouyou"></view>
-        </view>
-      </view>
-      <view class="item">
-        <text class="note">收货地址：</text>
-        <text class="detail">xxxxxxxxxxxxxxxx</text>
-      </view>
-      <!-- <view class="add-address-btn">+ 新增地址</view> -->
-      <image class="address-border" src="/images/cart_border@2x.png" alt="" />
-    </view>
-  </view>
-  <view class="divider"></view>
-  <view class="cart-list">
-    <view class="shop-head">
-      <!-- <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view> -->
-      <view class="shop-head-info">
-        <view class="iconfont icon-shop flex-center icon-dianpu"></view>
-        <text class="shop-name">优购生活馆</text>
-      </view>
-      <!-- <view class="iconfont-tap icon-bianji"></view> -->
-    </view>
-    <view class="product-item" wx:for="{{ cartData }}" wx:key="index" @longpress="handleRemoveItem({{ item.goods_id }})">
-      <!-- icon-xuanze-fill 选择状态 -->
-      <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view>
-      <navigator url="/pages/goods_detail?goods_id=55578" class="product-left">
-        <image class="product-img" src="{{ item.goods_small_logo }}" />
-      </navigator>
-      <view class="product-right">
-        <navigator url="/pages/goods_detail?goods_id={{ item.goods_id }}" class="product-name">
-          {{ item.goods_name }}
-        </navigator>
-        <view class="product-detail">
-          <!-- 商品简介 -->
-        </view>
-        <view class="product-price">
-          <text class="product-price-symbol">￥</text>
-          <text class="product-price-integer">{{ item.goods_price }}</text>
-          <text class="product-price-decimal">.00</text>
-        </view>
-        <!-- <view class="product-count">x{{ item.counts }}</view> -->
-        <view class="product-count-eidt">
-          <!-- disabled 禁用状态 -->
-          <view class="count-min disabled">-</view>
-          <input class="count-number" type="number" value="{{ item.count }}" />
-          <view class="count-add">+</view>
+      <view class="chooseAddress-component">
+        <view class="address-info">
+          <view class="item space-between">
+            <view class="col">
+              <text class="note">收货人：</text>
+              <text class="detail">张三</text>
+            </view>
+            <view class="col">
+              <text class="address-phone">123456789</text>
+              <view class="iconfont-tap icon-jiantouyou"></view>
+            </view>
+          </view>
+          <view class="item">
+            <text class="note">收货地址：</text>
+            <text class="detail">xxxxxxxxxxxxxxxx</text>
+          </view>
+          <!-- <view class="add-address-btn">+ 新增地址</view> -->
+          <image class="address-border" src="/images/cart_border@2x.png" alt="" />
         </view>
       </view>
-    </view>
-  </view>
-  <view class="bottom-space"></view>
-  <view class="fixed-bar">
-    <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view>
-    <text class="select-all">全选</text>
-    <view class="total">
-      <view class="total">
-        <view class="total-body">
-          <view class="total-note">合计：</view>
-          <view class="product-price">
-            <text class="product-price-symbol">￥</text>
-            <text class="product-price-integer">998</text>
-            <text class="product-price-decimal">.00</text>
+      <view class="divider"></view>
+      <view class="cart-list">
+        <view class="shop-head">
+          <!-- <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view> -->
+          <view class="shop-head-info">
+            <view class="iconfont icon-shop flex-center icon-dianpu"></view>
+            <text class="shop-name">优购生活馆</text>
+          </view>
+          <!-- <view class="iconfont-tap icon-bianji"></view> -->
+        </view>
+        <view class="product-item" wx:for="{{ cartData }}" wx:key="index" @longpress="handleRemoveItem({{ item.goods_id }})">
+          <!-- icon-xuanze-fill 选择状态 -->
+          <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view>
+          <navigator url="/pages/goods_detail?goods_id=55578" class="product-left">
+            <image class="product-img" src="{{ item.goods_small_logo }}" />
+          </navigator>
+          <view class="product-right">
+            <navigator url="/pages/goods_detail?goods_id={{ item.goods_id }}" class="product-name">
+              {{ item.goods_name }}
+            </navigator>
+            <view class="product-detail">
+              <!-- 商品简介 -->
+            </view>
+            <view class="product-price">
+              <text class="product-price-symbol">￥</text>
+              <text class="product-price-integer">{{ item.goods_price }}</text>
+              <text class="product-price-decimal">.00</text>
+            </view>
+            <!-- <view class="product-count">x{{ item.counts }}</view> -->
+            <view class="product-count-eidt">
+              <!-- disabled 禁用状态 -->
+              <view class="count-min disabled">-</view>
+              <input class="count-number" type="number" value="{{ item.count }}" />
+              <view class="count-add">+</view>
+            </view>
           </view>
         </view>
-        <view class="total-foot">包含运费</view>
       </view>
-    </view>
-    <!-- <button @tap="">查询订单</button> -->
-    <view class="buy-button">
-      <!-- <BtnWxLogin></BtnWxLogin> -->
-      结算(1565)
-    </view>
-  </view>
-  <!-- 购物车没有数据的提示信息 -->
-  <view class="cart-empty flex-center" hidden="{{ true }}">
-    <image class="cart-empty-img" src="/images/cart_empty@2x.png"></image>
-    <view class="cart-empty-txt">你还没有添加任何商品</view>
-  </view>
+      <view class="bottom-space"></view>
+      <view class="fixed-bar">
+        <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view>
+        <text class="select-all">全选</text>
+        <view class="total">
+          <view class="total">
+            <view class="total-body">
+              <view class="total-note">合计：</view>
+              <view class="product-price">
+                <text class="product-price-symbol">￥</text>
+                <text class="product-price-integer">998</text>
+                <text class="product-price-decimal">.00</text>
+              </view>
+            </view>
+            <view class="total-foot">包含运费</view>
+          </view>
+        </view>
+        <!-- <button @tap="">查询订单</button> -->
+        <view class="buy-button">
+          <!-- <BtnWxLogin></BtnWxLogin> -->
+          结算(1565)
+        </view>
+      </view>
+  </block>
+      <!-- 购物车没有数据的提示信息 -->
+      <view wx:else class="cart-empty flex-center">
+        <image class="cart-empty-img" src="/images/cart_empty@2x.png"></image>
+        <view class="cart-empty-txt">你还没有添加任何商品</view>
+      </view>
 </template>
 
 <script>
@@ -456,6 +458,8 @@
       text-align: center;
     }
   }
+
+  /*  微信登录按钮 */
 
   .wx-login-btn {
     width: 230rpx;
