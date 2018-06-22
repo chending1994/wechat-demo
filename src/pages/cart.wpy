@@ -33,7 +33,10 @@
         </view>
         <view class="product-item" wx:for="{{ cartData }}" wx:key="index" @longpress="handleRemoveItem({{ item.goods_id }})">
           <!-- icon-xuanze-fill 选择状态 -->
-          <view class="iconfont-tap icon-xuanze icon-xuanze-fill"></view>
+          <view
+            class="iconfont-tap icon-xuanze {{ item.selected ? 'icon-xuanze-fill' : '' }}"
+            @tap="handleSwitchSelect({{ item }})">
+          </view>
           <navigator url="/pages/goods_detail?goods_id=55578" class="product-left">
             <image class="product-img" src="{{ item.goods_small_logo }}" />
           </navigator>
@@ -75,7 +78,7 @@
               <view class="total-note">合计：</view>
               <view class="product-price">
                 <text class="product-price-symbol">￥</text>
-                <text class="product-price-integer">998</text>
+                <text class="product-price-integer">{{ amount }}</text>
                 <text class="product-price-decimal">.00</text>
               </view>
             </view>
@@ -85,7 +88,7 @@
         <!-- <button @tap="">查询订单</button> -->
         <view class="buy-button">
           <!-- <BtnWxLogin></BtnWxLogin> -->
-          结算(1565)
+          结算({{ selectedCount }})
         </view>
       </view>
   </block>
@@ -100,7 +103,9 @@
   import wepy from 'wepy'
   export default class Category extends wepy.page {
     data = {
-      cartData: []
+      cartData: [],
+      amount: 0,
+      selectedCount: 0
     }
     methods = {
       /**
@@ -145,11 +150,34 @@
           key: 'cart_data',
           data: this.cartData
         })
+      },
+
+      /**
+       * 处理购物车商品的切换选中状态
+       */
+      handleSwitchSelect (item) {
+        const index = this.cartData.findIndex(prod => prod.goods_id === item.goods_id)
+        this.cartData[index].selected = !this.cartData[index].selected
       }
     }
+
+    getAmount () {
+      let amount = 0
+      let selectedCount = 0
+      this.cartData.forEach(item => {
+        if (item.selected) {
+          amount += item.goods_price * item.count
+          selectedCount += item.count
+        }
+      })
+      this.amount = amount
+      this.selectedCount = selectedCount
+    }
+
     onLoad() {}
     onShow() {
       this.cartData = wepy.getStorageSync('cart_data') || []
+      this.getAmount()
     }
   }
 
